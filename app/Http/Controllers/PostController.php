@@ -28,7 +28,7 @@ class PostController extends Controller
     }
     //创建逻辑
     public function store(){
-
+        dd(request());
     }
     //文章修改
     public function edit()
