@@ -4,7 +4,7 @@ Route::get('/register','\App\Http\Controllers\RegisterController@index');
 //注册行为
 Route::post('/register','\App\Http\Controllers\RegisterController@register');
 //登陆页面
-Route::login('/login','\App\Http\Controllers\LoginController@index');
+Route::get('/login','\App\Http\Controllers\LoginController@index');
 //登陆行为
 Route::post('/login','\App\Http\Controllers\LoginController@login');
 Route::get('/logout','\App\Http\Controllers\LoginController@logout');
