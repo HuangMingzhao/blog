@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -10327,8 +10327,7 @@ return jQuery;
 
 
 /***/ }),
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {$.ajaxSetup({
@@ -10337,76 +10336,58 @@ return jQuery;
     }
 });
 
-$(".like-button").click(function (event) {
+$(".post-audit").click(function (event) {
     target = $(event.target);
-    var current_like = target.attr("like-value");
-    var user_id = target.attr("like-user");
-    //var _token = target.attr("_token");
-    // 已经关注了
-    if (current_like == 1) {
-        // 取消关注
-        $.ajax({
-            url: "/user/" + user_id + "/unfan",
-            method: "POST",
-            //data: {"_token": _token},
-            dataType: "json",
-            success: function success(data) {
-                if (data.error != 0) {
-                    alert(data.msg);
-                    return;
-                }
+    var post_id = target.attr("post-id");
+    var status = target.attr("post-action-status");
 
-                target.attr("like-value", 0);
-                target.text("关注");
+    $.ajax({
+        url: "/admin/posts/" + post_id + "/status",
+        method: "POST",
+        data: { "status": status },
+        dataType: "json",
+        success: function success(data) {
+            if (data.error != 0) {
+                alert(data.msg);
+                return;
             }
-        });
-    } else {
-        // 取消关注
-        $.ajax({
-            url: "/user/" + user_id + "/fan",
-            method: "POST",
-            //data: {"_token": _token},
-            dataType: "json",
-            success: function success(data) {
-                if (data.error != 0) {
-                    alert(data.msg);
-                    return;
-                }
 
-                target.attr("like-value", 1);
-                target.text("取消关注");
-            }
-        });
-    }
+            target.parent().parent().remove();
+        }
+    });
 });
 
-var editor = new wangEditor('content');
-if (editor.config) {
-    // 上传图片（举例）
-    editor.config.uploadImgUrl = '/posts/image/upload';
+$(".resource-delete").click(function (event) {
+    if (confirm("确定执行删除操作么?") == false) {
+        return;
+    }
 
-    editor.config.uploadHeaders = {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    };
+    var target = $(event.target);
+    event.preventDefault();
+    var url = $(target).attr("delete-url");
+    $.ajax({
+        url: url,
+        method: "POST",
+        data: { "_method": 'DELETE' },
+        dataType: "json",
+        success: function success(data) {
+            if (data.error != 0) {
+                alert(data.msg);
+                return;
+            }
 
-    // 隐藏掉插入网络图片功能。该配置，只有在你正确配置了图片上传功能之后才可用。
-    editor.config.hideLinkImg = true;
-    editor.create();
-}
-
-$(".preview_input").change(function (event) {
-    var file = event.currentTarget.files[0];
-    var url = window.URL.createObjectURL(file);
-    $(event.target).next(".preview_img").attr("src", url);
+            window.location.reload();
+        }
+    });
 });
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(2);
+module.exports = __webpack_require__(1);
 
 
 /***/ })
